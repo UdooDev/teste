@@ -33,19 +33,19 @@ class res_partner(models.Model):
                 linha = "%s,%s,%d,%.2f,%.2f,%.2f\n" % (isbn, titulo, int(quantidade), val_custo, val_venda, total)
                 arquivo = arquivo + linha
 
-            # out_move = self.env['stock.move'].search([('location_id', '=', self.consignee_location_id.id)])
-            # if out_move:
-            #     t_sold = "\n\n\n Total Sold Products \n\n"
-            #     arquivo = arquivo + t_sold
-            #     for produto in out_move:
-            #         isbn = produto.product_id.ean13
-            #         titulo = produto.product_id.name
-            #         quantidade = produto.product_uom_qty
-            #         val_custo = produto.product_id.standard_price
-            #         val_venda = produto.product_id.list_price
-            #         total = val_custo * quantidade
-            #         linha = "%s,%s,%d,%.2f,%.2f,%.2f\n" % (isbn, titulo, int(quantidade), val_custo, val_venda, total)
-            #         arquivo = arquivo + linha
+            out_move = self.env['stock.move'].search([('location_id', '=', self.consignee_location_id.id)])
+            if out_move:
+                t_sold = "\n\n\n Total Sold Products \n\n"
+                arquivo = arquivo + t_sold
+                for produto in out_move:
+                    isbn = produto.product_id.ean13
+                    titulo = produto.product_id.name
+                    quantidade = produto.product_uom_qty
+                    val_custo = produto.product_id.standard_price
+                    val_venda = produto.product_id.list_price
+                    total = val_custo * quantidade
+                    linha = "%s,%s,%d,%.2f,%.2f,%.2f\n" % (isbn, titulo, int(quantidade), val_custo, val_venda, total)
+                    arquivo = arquivo + linha
 
             mode = 'manual'
             if self._context.get('mode') and self._context.get('mode') == 'auto':
