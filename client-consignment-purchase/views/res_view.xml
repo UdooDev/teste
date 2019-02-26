@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.actions.act_window" id="consignee_open_stock_move">
+            <field name="context">{'search_default_productgroup': 1}</field>
+            <field name="name">SO Consignado</field>
+            <field name="res_model">stock.move</field>
+        </record>
+        
+        <record id="view_partner_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.inherit.consignment</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/div[1]/button[@name='toggle_active']" position="after">
+                    <!-- <button class="oe_stat_button" name="action_view_soconsignment_products" icon="fa-building-o"
+                            type="object" attrs="{'invisible':[('type', '=', 'service')]}" string="Purchase SO Consignação">
+                    </button> -->
+                    <button class="oe_stat_button" name="action_view_poconsignment_products" icon="fa-building-o"
+                            type="object" attrs="{'invisible': ['|',('supplier', '=', False), ('type', '=', 'service')]}" string="POC">
+                    </button>
+                    <br/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

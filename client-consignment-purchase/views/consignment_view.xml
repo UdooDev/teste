@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="consignment_purchase_tree_view" model="ir.ui.view">
+            <field name="name">Consignment Tree Purchase Order</field>
+            <field name="model">consignment.purchase</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="order_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="consignment_purchase_form_view" model="ir.ui.view">
+            <field name="name">Consignment Form Purchase Order</field>
+            <field name="model">consignment.purchase</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="button_confirm" states="draft" string="Confirm" type="object"/>
+                        <button name="button_transfer" states="confirmed" string="Transfer" type="object"/>
+                        <button name="button_view_invoice" states="confirmed,transferred" string="View Invoice" type="object"/>
+                        <button name="button_cancel" states="confirmed" string="Cancel" type="object"/>
+                        <button name="button_restock" states="confirmed,transferred" string="Restock" type="object"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <h1>
+                            <!-- <label string="Sale "/> -->
+                            <field name="name" class="oe_inline" />
+                        </h1>
+
+                        <group>
+                            <group>
+                                <field name="partner_id" domain="[('customer','=',True)]" context="{'search_default_customer':1, 'show_address': 1}" options='{"always_reload": True}'/>
+                                <field name="client_order_ref"/>
+                            </group>
+                            <group>
+                                <field name="order_date"/>
+                                <field name="pricelist_id" groups="product.group_sale_pricelist"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Order Lines">
+                                <field name="order_line">
+                                    <tree string="Consignment Order Lines" editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="name"/>
+                                        <field name="quantity"/>
+                                        <field name="product_uom"/>
+                                        <field name="price_unit"/>
+                                        <field name="price_subtotal"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_consignment_purchase" model="ir.actions.act_window">
+            <field name="name">Consignment Purchase</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">consignment.purchase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="action_consignment_purchase" id="menu_consignment_purchase" parent="client-consignment.menu_consignment_side_main" sequence="2" />
+    </data>
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_consignment_purchase,access_consignment_purchase,model_consignment_purchase,,1,1,1,1
+access_consignment_purchase_line,access_consignment_purchase_line,model_consignment_purchase_line,,1,1,1,1
+access_consignment_purchase_order_line,access_consignment_order_line,model_consignment_purchase_order_line,,1,1,1,1
