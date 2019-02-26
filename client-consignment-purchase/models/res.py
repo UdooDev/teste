@@ -74,7 +74,7 @@ class res_partner(models.Model):
             imd = self.env['ir.model.data']
             list_view_id = imd.xmlid_to_res_id('stock.view_stock_quant_tree')            
             form_view_id = imd.xmlid_to_res_id('stock.view_stock_quant_form')
-            action = self.env.ref('client-consignment.consignee_open_quants').read()[0]
+            action = self.env.ref('client-consignment-sale.consignee_open_quants').read()[0]
             action['domain'] = "[('consig_op_type', '=', 'purchase'), ('location_id','=',%s)]" % self.consignee_location_id.id
             action['context'] = {'search_default_internal_loc': 1, 'search_default_productgroup': 1}
             action['views'] = [[list_view_id, 'tree'], [form_view_id, 'form']]
