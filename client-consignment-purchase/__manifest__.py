@@ -8,7 +8,7 @@
     'website': "www.udoo.com.br",
     'category': 'General',
     'version': '12.0',
-    'depends': ['base', 'purchase', 'stock', 'product', 'client-consignment'],
+    'depends': ['base', 'purchase', 'stock', 'product'],
 
     'data': [
         'security/ir.model.access.csv',
