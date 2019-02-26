@@ -6,6 +6,9 @@ import base64
 import datetime
 from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationError, Warning
 import csv
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class res_partner(models.Model):
     _inherit = 'res.partner'
@@ -34,8 +37,9 @@ class res_partner(models.Model):
                 arquivo = arquivo + linha
 
             out_move = self.env['stock.move'].search([('location_id', '=', self.consignee_location_id.id)])
+            _logger.info("=======move========",out_move)
             if out_move:
-                t_sold = "\n\n\n Total Sold Products \n\n"
+                t_sold = "\n\n Total Sold Products \n\n"
                 arquivo = arquivo + t_sold
                 for produto in out_move:
                     isbn = produto.product_id.ean13
@@ -46,7 +50,7 @@ class res_partner(models.Model):
                     total = val_custo * quantidade
                     linha = "%s,%s,%d,%.2f,%.2f,%.2f\n" % (isbn, titulo, int(quantidade), val_custo, val_venda, total)
                     arquivo = arquivo + linha
-
+            _logger.info("=======data========",arquivo)
             mode = 'manual'
             if self._context.get('mode') and self._context.get('mode') == 'auto':
                 mode = 'auto'
