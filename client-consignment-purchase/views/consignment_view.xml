@@ -70,6 +70,6 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem action="action_consignment_purchase" id="menu_consignment_purchase" parent="client-consignment.menu_consignment_side_main" sequence="2" />
+        <menuitem action="action_consignment_purchase" id="menu_consignment_purchase" parent="client-consignment-sale.menu_consignment_side_main" sequence="2" />
     </data>
 </odoo>
