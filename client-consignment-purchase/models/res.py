@@ -16,8 +16,9 @@ class res_partner(models.Model):
     @api.multi
     def create_xls_poconsignment_report(self):
         estoque = self.env['stock.quant'].search([('location_id.id', '=', self.consignee_location_id.id)])
-        _logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-        if len(estoque) > 0:            
+        _logger.info(">>>>>>>>>>>>>>>>>>>>>>>>111>>>>>>>>>>>>>>>>>>>")
+        if len(estoque) > 0:
+            _logger.info(">>>>>>>>>>>>>>>>>>222>>>>>>>>>>>>>>>>>>>>>>>>>",estoque)            
             cabecalho = "Mapa de Consignação Editora Hedra\ncomercial@hedra.com.br\n11-3097-8304\n\n"
             empresa = self.name + "\n"
             data = datetime.datetime.now().strftime('%d-%m-%Y')
