@@ -16,9 +16,9 @@ class res_partner(models.Model):
     @api.multi
     def create_xls_poconsignment_report(self):
         estoque = self.env['stock.quant'].search([('location_id.id', '=', self.consignee_location_id.id)])
-        _logger.info(">>>>>>>>>>>>>>>>>>>>>>>>111>>>>>>>>>>>>>>>>>>>")
+        _logger.info(">>>>>>>>>>>>>>>>>>>>>>>>111>>>>>>>>>>>>>>>>>>>%s==",estoque)
         if len(estoque) > 0:
-            _logger.info(">>>>>>>>>>>>>>>>>>222>>>>>>>>>>>>>>>>>>>>>>>>>",estoque)            
+            _logger.info(">>>>>>>>>>>>>>>>>>222>>>>>>>>>>>>>>>>>>>>>>>>>%s",estoque)            
             cabecalho = "Mapa de Consignação Editora Hedra\ncomercial@hedra.com.br\n11-3097-8304\n\n"
             empresa = self.name + "\n"
             data = datetime.datetime.now().strftime('%d-%m-%Y')
@@ -38,7 +38,7 @@ class res_partner(models.Model):
                 arquivo = arquivo + linha
 
             out_move = self.env['stock.move'].search([('location_id', '=', self.consignee_location_id.id)])
-            _logger.info("=======move========",out_move)
+            _logger.info("=======move=======%s=",out_move)
             if out_move:
                 t_sold = "\n\n Total Sold Products \n\n"
                 arquivo = arquivo + t_sold
@@ -51,7 +51,7 @@ class res_partner(models.Model):
                     total = val_custo * quantidade
                     linha = "%s,%s,%d,%.2f,%.2f,%.2f\n" % (isbn, titulo, int(quantidade), val_custo, val_venda, total)
                     arquivo = arquivo + linha
-            _logger.info("=======data========",arquivo)
+            _logger.info("=======data=======%s=",arquivo)
             mode = 'manual'
             if self._context.get('mode') and self._context.get('mode') == 'auto':
                 mode = 'auto'
