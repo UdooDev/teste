@@ -13,7 +13,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/email_template_purchase_consignment.xml',
-        'views/consignment_view.xml',
+        # 'views/consignment_view.xml',
         'views/purchase_view.xml',
         'views/res_view.xml'
     ],
