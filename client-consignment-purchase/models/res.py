@@ -13,62 +13,62 @@ _logger = logging.getLogger(__name__)
 class res_partner(models.Model):
     _inherit = 'res.partner'
 
-    @api.multi
-    def create_xls_consignment_report(self):
-        estoque = self.env['stock.quant'].search([('location_id.id', '=', self.consignee_location_id.id)])
-        _logger.info("=========no2=========")
-        if len(estoque) > 0:            
-            cabecalho = "Mapa de Consignação Editora Hedra\ncomercial@hedra.com.br\n11-3097-8304\n\n"
-            empresa = self.name + "\n"
-            data = datetime.datetime.now().strftime('%d-%m-%Y')
-            campos = "\n\nISBN,Titulo,Quantidade,Valor de Custo,Valor de Venda,Valor Total,Acerto,Reposição\n"
+    # @api.multi
+    # def create_xls_consignment_report(self):
+    #     estoque = self.env['stock.quant'].search([('location_id.id', '=', self.consignee_location_id.id)])
+    #     _logger.info("=========no2=========")
+    #     if len(estoque) > 0:            
+    #         cabecalho = "Mapa de Consignação Editora Hedra\ncomercial@hedra.com.br\n11-3097-8304\n\n"
+    #         empresa = self.name + "\n"
+    #         data = datetime.datetime.now().strftime('%d-%m-%Y')
+    #         campos = "\n\nISBN,Titulo,Quantidade,Valor de Custo,Valor de Venda,Valor Total,Acerto,Reposição\n"
 
-            arquivo = cabecalho + empresa + data + campos
+    #         arquivo = cabecalho + empresa + data + campos
 
-            for produto in estoque:
-                isbn = produto.product_id.ean13
-                titulo = produto.product_id.name
-                quantidade = produto.quantity
-                val_custo = produto.product_id.standard_price
-                val_venda = produto.product_id.list_price
-                total = val_custo * quantidade
+    #         for produto in estoque:
+    #             isbn = produto.product_id.ean13
+    #             titulo = produto.product_id.name
+    #             quantidade = produto.quantity
+    #             val_custo = produto.product_id.standard_price
+    #             val_venda = produto.product_id.list_price
+    #             total = val_custo * quantidade
 
-                linha = "%s,%s,%d,%.2f,%.2f,%.2f\n" % (isbn, titulo, int(quantidade), val_custo, val_venda, total)
-                arquivo = arquivo + linha
+    #             linha = "%s,%s,%d,%.2f,%.2f,%.2f\n" % (isbn, titulo, int(quantidade), val_custo, val_venda, total)
+    #             arquivo = arquivo + linha
 
-            out_move = self.env['stock.move'].search([('location_id', '=', self.consignee_location_id.id)])
-            _logger.info("=======move========",out_move)
-            if out_move:
-                t_sold = "\n\n Total Sold Products \n\n"
-                arquivo = arquivo + t_sold
-                for produto in out_move:
-                    isbn = produto.product_id.ean13
-                    titulo = produto.product_id.name
-                    quantidade = produto.product_uom_qty
-                    val_custo = produto.product_id.standard_price
-                    val_venda = produto.product_id.list_price
-                    total = val_custo * quantidade
-                    linha = "%s,%s,%d,%.2f,%.2f,%.2f\n" % (isbn, titulo, int(quantidade), val_custo, val_venda, total)
-                    arquivo = arquivo + linha
-            _logger.info("=======data========",arquivo)
-            mode = 'manual'
-            if self._context.get('mode') and self._context.get('mode') == 'auto':
-                mode = 'auto'
+    #         out_move = self.env['stock.move'].search([('location_id', '=', self.consignee_location_id.id)])
+    #         _logger.info("=======move========",out_move)
+    #         if out_move:
+    #             t_sold = "\n\n Total Sold Products \n\n"
+    #             arquivo = arquivo + t_sold
+    #             for produto in out_move:
+    #                 isbn = produto.product_id.ean13
+    #                 titulo = produto.product_id.name
+    #                 quantidade = produto.product_uom_qty
+    #                 val_custo = produto.product_id.standard_price
+    #                 val_venda = produto.product_id.list_price
+    #                 total = val_custo * quantidade
+    #                 linha = "%s,%s,%d,%.2f,%.2f,%.2f\n" % (isbn, titulo, int(quantidade), val_custo, val_venda, total)
+    #                 arquivo = arquivo + linha
+    #         _logger.info("=======data========",arquivo)
+    #         mode = 'manual'
+    #         if self._context.get('mode') and self._context.get('mode') == 'auto':
+    #             mode = 'auto'
             
-            attach = self.env['ir.attachment'].create({
-                    'name': u'RelatorioConsignacao.xlsx',
-                    'datas': base64.b64encode(arquivo.encode()),
-                    'datas_fname': "RelatorioConsignacao.xlsx",
-                    'res_model': 'mail.compose.message',
-                    'res_id': 0,
-                    'consignment_partner_id': self.id,
-                    'consignment_mode': mode
-                })
+    #         attach = self.env['ir.attachment'].create({
+    #                 'name': u'RelatorioConsignacao.xlsx',
+    #                 'datas': base64.b64encode(arquivo.encode()),
+    #                 'datas_fname': "RelatorioConsignacao.xlsx",
+    #                 'res_model': 'mail.compose.message',
+    #                 'res_id': 0,
+    #                 'consignment_partner_id': self.id,
+    #                 'consignment_mode': mode
+    #             })
 
-            print ("attachment_id-----------",attach)
-            return attach.id
-        else:
-            return False
+    #         print ("attachment_id-----------",attach)
+    #         return attach.id
+    #     else:
+    #         return False
 
     @api.multi
     def action_view_poconsignment_products(self):
@@ -155,7 +155,7 @@ class mail_compose_message(models.TransientModel):
             if self._context and self._context.get('active_id'):
                 _logger.info("=============yes=========")
                 attachment_id = self.env['res.partner'].browse(self._context.get('active_id')).create_xls_consignment_report()
-
+                _logger.info("========after=====yes=========",attachment_id)
                 if attachment_id:
                     result['attachment_ids'] = [attachment_id]
 
