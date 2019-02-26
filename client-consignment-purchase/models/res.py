@@ -153,6 +153,7 @@ class mail_compose_message(models.TransientModel):
 
         if result.get('template_id') and result.get('template_id') == consignment_template.id:
             if self._context and self._context.get('active_id'):
+                _logger.info("=============yes=========")
                 attachment_id = self.env['res.partner'].browse(self._context.get('active_id')).create_xls_consignment_report()
 
                 if attachment_id:
