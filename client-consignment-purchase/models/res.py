@@ -16,7 +16,7 @@ class res_partner(models.Model):
     @api.multi
     def create_xls_consignment_report(self):
         estoque = self.env['stock.quant'].search([('location_id.id', '=', self.consignee_location_id.id)])
-
+        _logger.info("=========no2=========")
         if len(estoque) > 0:            
             cabecalho = "Mapa de Consignação Editora Hedra\ncomercial@hedra.com.br\n11-3097-8304\n\n"
             empresa = self.name + "\n"
