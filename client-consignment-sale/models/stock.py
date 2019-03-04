@@ -43,13 +43,13 @@ class stock_location(models.Model):
 
     consignee_id = fields.Many2one('res.partner','Consignatário', readonly=True)
     consignment_operation_type = fields.Selection([('sale','Sale'),('purchase','Purchase')], string='Consignment Operation Type')
-    is_consignment = fields.Boolean('Local de Consignação', readonly=True)
+    is_consignment = fields.Boolean('Local de SOC', readonly=True)
 
     @api.one
     @api.constrains('consignee_id')
     def _check_internal_location(self):
         if self.consignee_id and self.usage != 'internal':
-            raise Warning(_('O local de consignação deve ser internal'))
+            raise Warning(_('O local de SOC deve ser internal'))
 
 
 class StockMoves(models.Model):

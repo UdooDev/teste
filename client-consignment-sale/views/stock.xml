@@ -45,7 +45,7 @@
             <field name="inherit_id" ref="stock.view_location_search"/>
             <field name="arch" type="xml">
                 <filter name="supplier" position="after">
-                    <filter icon="terp-personal" name="consignee_location" string="Consignação" domain="[('consignee_id', '!=', False)]" help="	Locais de Consignação"/>
+                    <filter icon="terp-personal" name="consignee_location" string="SOC" domain="[('consignee_id', '!=', False)]" help="	Locais de SOC"/>
                 </filter>
             </field>
         </record>

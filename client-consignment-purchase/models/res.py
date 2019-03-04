@@ -15,7 +15,7 @@ class res_partner(models.Model):
         estoque = self.env['stock.quant'].search([('location_id.id', '=', self.consignee_location_id.id)])
 
         if len(estoque) > 0:            
-            cabecalho = "Mapa de Consignação Editora Hedra\ncomercial@hedra.com.br\n11-3097-8304\n\n"
+            cabecalho = "Mapa de SOC Editora Hedra\ncomercial@hedra.com.br\n11-3097-8304\n\n"
             empresa = self.name + "\n"
             data = datetime.datetime.now().strftime('%d-%m-%Y')
             campos = "\n\nISBN,Titulo,Quantidade,Valor de Custo,Valor de Venda,Valor Total,Acerto,Reposição\n"

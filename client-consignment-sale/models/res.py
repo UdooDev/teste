@@ -10,10 +10,10 @@ import csv
 class res_partner(models.Model):
     _inherit = 'res.partner'
 
-    allow_consignment = fields.Boolean("Permite Consignação")
+    allow_consignment = fields.Boolean("Permite Consignação POC / SOC")
     # is_author = fields.Boolean("Autor", default=False)
     consignee_location_id = fields.Many2one('stock.location','Local de Consignação')
-    report_attachment_ids = fields.One2many('ir.attachment','consignment_partner_id',string='Relatórios de Consignação')
+    report_attachment_ids = fields.One2many('ir.attachment','consignment_partner_id',string='Relatórios de SOC')
     send_auto_email = fields.Boolean("Enviar Relatório Automático")
 
     @api.multi
@@ -25,7 +25,7 @@ class res_partner(models.Model):
             consignent_op_type = 'sale'
         elif self.supplier:
             consignent_op_type = 'purchase'
-        if not self.env['stock.location'].search([('name','=', 'Consignado'),('usage','=','internal')]):
+        if not self.env['stock.location'].search([('name','=', 'POC'),('usage','=','internal')]):
             print('\nentrou no if consigando')
             default_vals = location_obj.default_get(location_obj.fields_get())
 

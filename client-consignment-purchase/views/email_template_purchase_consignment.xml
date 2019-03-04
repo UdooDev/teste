@@ -14,7 +14,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//form/sheet/div[1]/button[@name='toggle_active']" position="after">
                     <button class="oe_stat_button" name="action_view_consignment_products" icon="fa-building-o"
-                            type="object" attrs="{'invisible':[('type', '=', 'service')]}" string="Estoque em Consignação">
+                            type="object" attrs="{'invisible':[('type', '=', 'service')]}" string="Estoque em POC">
                     </button>
                     <br/>
                 </xpath>
@@ -28,7 +28,7 @@
                     <page string="Histórico de Relatórios" name="consignment_reports">
                         <group>
                             <field name="report_attachment_ids" readonly="1" nolabel="1">
-                                <tree string="Relatório de Consignação">
+                                <tree string="Relatório de POC">
                                     <field name="create_date"/>
                                     <field name="consignment_mode"/>
                                     <field name="datas_fname"/>
@@ -53,7 +53,7 @@
 
     <p>Olá ${object.name},</p>
     <br/>
-    <p>Há um relatório de consignação anexado neste e-mail. </p>
+    <p>Há um relatório de POC anexado neste e-mail. </p>
     <br/>
     <p>Se você tiver alguma dúvida, não hesite em nos responder.</p>
     <br/>
@@ -128,7 +128,7 @@
         </record> -->
         <!-- CRON JOB FOR SENDING MAIL OF REPORT AUTOMATICALLY -->
        <!--  <record id="ir_cron_consignment_report_action" model="ir.cron">
-            <field name="name">Hedra: Relatório de Consignação</field>
+            <field name="name">Hedra: Relatório de POC</field>
             <field name="interval_number">1</field>
             <field name="interval_type">months</field>
             <field name="numbercall">-1</field>

@@ -8,7 +8,7 @@ import datetime
 class purchase_order(models.Model):
     _inherit = 'purchase.order'
 
-    order_type = fields.Selection([('purchase','Compras Regular'),('con_purchase','Recebimento de Consignação')], 
+    order_type = fields.Selection([('purchase','Compras Regular'),('con_purchase','Recebimento de POC')], 
         string = "Tipo de Compras", default='purchase', required=True)
 
     #date_time = fields.Datetime('Data e Hora')
@@ -40,7 +40,7 @@ class purchase_order(models.Model):
                 
                 if not partner['allow_consignment']:
                     result['value'] = {'partner_id':False}
-                    result['warning'] = {'title': "Aviso!",'message': "Este Cliente não permite operações de consignação."}
+                    result['warning'] = {'title': "Aviso!",'message': "Este Cliente não permite operações de POC."}
                     
         elif self.order_type and self.order_type == 'purchase':
             result['domain'] = {'partner_id':[('supplier','=',True)]}
@@ -54,7 +54,7 @@ class purchase_order(models.Model):
         if self.order_type == 'con_purchase':
             self = self
             if len(self.order_line) < 1:
-                raise Warning("Adicione um ou mais produtos para confirmar o Acerto de Consignação.")
+                raise Warning("Adicione um ou mais produtos para confirmar o Acerto de POC.")
                 return False
             else:
                 flag = False
@@ -82,7 +82,7 @@ class purchase_order(models.Model):
                 return True
         else:
             if len(self.order_line) < 1:
-                raise Warning("Adicione um ou mais produtos para confirmar o Acerto de Consignação.")
+                raise Warning("Adicione um ou mais produtos para confirmar o Acerto de POC.")
             else:
                 return super(purchase_order, self).button_confirm()
     
@@ -105,7 +105,7 @@ class purchase_order(models.Model):
     def teste_email(self):
         print("Teste")
         email = self.env['mail.mail'].create(
-            {'subject' : 'Aviso! Acerto de Consignação x negativou o estoque',
+            {'subject' : 'Aviso! Acerto de POC x negativou o estoque',
              'email_from' : 'projetos@solap.com.br',
              'email_to' : 'projetos@solap.com.br',
              'body_html' : 'Aqui vai o aviso de que o estoque negativou para o acerto x',
@@ -118,7 +118,7 @@ class purchase_order(models.Model):
     @api.multi
     def create_channel(self):
         mail_channel = self.env['mail.channel'].create(
-                {'name' : 'Erros de Consignação',
+                {'name' : 'Erros de SOC',
                  'public' : 'public'
                 }
             )
@@ -132,7 +132,7 @@ class purchase_order(models.Model):
 
     @api.multi
     def create_message(self, log):
-        record_name = 'Erros de Consignação'
+        record_name = 'Erros de SOC'
         channel =  self.env['mail.channel'].search([('name', '=', record_name)])
         print(channel, bool(channel))
 
@@ -148,7 +148,7 @@ class purchase_order(models.Model):
         res_id = channel.id
         message_type = 'comment'
 
-        body = 'A venda de Ajuste de Consignação %s gerou estoque negativo para o(s) seguinte(s) produto(s):<br>' % self.name + log
+        body = 'A venda de Ajuste de SOC %s gerou estoque negativo para o(s) seguinte(s) produto(s):<br>' % self.name + log
 
         vals = {'date' : date, 
                 'email_from' : email_from, 
@@ -168,7 +168,7 @@ class purchase_order(models.Model):
 class purchase_order_line(models.Model):
     _inherit = 'purchase.order.line'
 
-    consignment_stock = fields.Float(string='Estoque em Consignação', compute='_compute_consignment_stock', store=True)
+    consignment_stock = fields.Float(string='Estoque em SOC', compute='_compute_consignment_stock', store=True)
     
     @api.one
     @api.depends('product_id')
@@ -195,7 +195,7 @@ class purchase_order_line(models.Model):
             if self.order_id.order_type != 'purchase' and self.product_id.product_tmpl_id.type != 'product':
                 result = {}
                 result['value'] = {'product_id':False, 'name':False, 'product_uom_qty':1, 'price_unit':False, 'tax_id':False, 'price_subtotal':False}
-                result['warning'] = {'title': "Aviso!",'message': "Este Tipo de Produto não é permitido em operações de consignação."}
+                result['warning'] = {'title': "Aviso!",'message': "Este Tipo de Produto não é permitido em operações de SOC."}
                 return result
             
             consignment_quants = self.env['stock.quant'].search([('location_id','=',self.order_id.partner_id.consignee_location_id.id),
@@ -221,7 +221,7 @@ class purchase_order_line(models.Model):
     #             return {
     #                 'warning': {
     #                     'title': "Aviso!",
-    #                     'message': "Esta Venda Consignada irá negativar o estoque de consignação deste produto.",
+    #                     'message': "Esta Venda Consignada irá negativar o estoque de SOC deste produto.",
     #                 },
     #             }
     #   

@@ -29,7 +29,7 @@
                         <group>
                             <field name="report_attachment_ids" readonly="1" nolabel="1">
                                 <tree string="Relatório de Consignação">
-                                    <field name="create_date"/>
+                                    <field ne="create_date"/>
                                     <field name="consignment_mode"/>
                                     <field name="datas_fname"/>
                                 </tree>
@@ -57,18 +57,18 @@
 
         <!-- Consignment Report Email Template -->
         <record id="email_template_partner_consignment_report" model="mail.template">
-            <field name="name">Relatório de Consignação</field>
+            <field name="name">Relatório de SOC</field>
             <field name="model_id" ref="base.model_res_partner"/>
             <field name="auto_delete" eval="False"/>
             <field name="email_from">${object.user_id.email|safe}</field>
             <field name="partner_to">${object.id}</field>
-            <field name="subject">${object.company_id.name} - Relatório de Consignação</field>
+            <field name="subject">${object.company_id.name} - Relatório de SOC</field>
             <field name="body_html"><![CDATA[           
 <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
 
     <p>Olá ${object.name},</p>
     <br/>
-    <p>Há um relatório de consignação anexado neste e-mail. </p>
+    <p>Há um relatório de SOC anexado neste e-mail. </p>
     <br/>
     <p>Se você tiver alguma dúvida, não hesite em nos responder.</p>
     <br/>
@@ -114,7 +114,7 @@
         
         <!-- "Email Consignment Report" button in Customer -> More -->
         <act_window id="partner_consignment_action"
-            name="E-mail: Relatório de Consignação"
+            name="E-mail: Relatório de SOC"
             src_model="res.partner"
             res_model="mail.compose.message"
             view_type="form" view_mode="form"
@@ -144,7 +144,7 @@
 
         <!-- CRON JOB FOR SENDING MAIL OF REPORT AUTOMATICALLY -->
         <record id="ir_cron_consignment_report_action" model="ir.cron">
-            <field name="name">Hedra: Relatório de Consignação</field>
+            <field name="name">Hedra: Relatório de SOC</field>
             <field name="interval_number">1</field>
             <field name="interval_type">months</field>
             <field name="numbercall">-1</field>
